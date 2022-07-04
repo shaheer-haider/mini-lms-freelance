@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .modules_info_section{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .certificate_of_completion{
+    background: url('https://thumbs.dreamstime.com/b/abstract-modern-futuristic-white-wavy-gold-lines-blurred-light-curved-background-164720623.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+    border: 1px solid gray;
+    padding: 30px 20px;
+    min-height: 300px;
+    }
+    .certificate_of_completion>p{
+    font-weight: bold;
+    font-size: 18px;
+    }
+    .certificate_of_completion>p>span{
+        font-weight: 500;
+        font-size: 16px;
+    }
+</style>
+
+<div class="section">
+	<h4>{{ course.title }}</h4>
+	<div class="divider"></div>
+</div>
+
+<div class="row">
+
+<div class="col s3">
+      <ul class="collection with-header">
+        <li class="collection-header"><h4>Classroom</h4></li>
+        <a href="{% url 'course' course.id %}" class="collection-item">Home</a>
+        <a href="{% url 'modules' course.id %}" class="collection-item active">Module</a>
+        <a href="{% url 'submissions' course.id %}" class="collection-item">Submissions</a>
+        <a href="{% url 'questions' course.id %}" class="collection-item">Questions</a>
+      </ul>
+</div>
+
+<div class="col s9">
+
+  {% if teacher_mode == True %}
+    <a href="{% url 'new-module' course.id %}" class="btn-floating btn-large waves-effect waves-light red right"><i class="material-icons">add</i></a>
+  {% endif %}
+
+  <div class="section">
+    <h4>Modules</h4>
+    <div class="divider"></div> 
+
+    <ul class="collapsible">
+      {% for module in course_modules %}
+      <li>
+        <div class="collapsible-header modules_info_section">
+            <div>
+                <i class="material-icons">expand_more</i>
+                <b>{{ module.title }}</b>
+            </div>
+            <div>Status:
+            {% if module.isActive %}
+                    {% if module.isCompleted %}Completed{% else %}Incomplete {% endif %}
+            {% else %}
+                  Locked
+            {% endif %}
+            </div>
+        </div>
+
+        {% comment %} <div class="collapsible-body"> {% endcomment %}
+        <div class="">
+          {% if teacher_mode == True %}
+            <a href="{% url 'new-page' course.id module.id %}" class="btn-small"><i class="material-icons">add</i>Add new page</a>
+            <a href="{% url 'new-quiz' course.id module.id %}" class="btn-small"><i class="material-icons">add</i>Add new quiz</a>
+            <a href="{% url 'new-assignment' course.id module.id %}" class="btn-small"><i class="material-icons">add</i>add new assignment</a>
+          {% endif %}
+            <div class="collection">
+              <br>
+              {% for page in module.pages.all %}
+                <a
+                        {% if module.isActive %}
+                        href="{% url 'page-detail' course.id module.id page.id %}"
+                        {% endif %}
+                        class="collection-item" >
+                    <i class="material-icons">segment</i> {{ page.title }}
+                 <div class="secondary-content">
+                     {% if module.isActive %}
+                    Completed:
+                     {% else %}
+                     Locked:
+                     {% endif %}
+                     <i class="material-icons secondary-content">{% if page.id in page_completions %}check_circle{% else %}panorama_fish_eye{% endif %}</i>
+                 </div>
+                </a>
+              {% endfor %}
+              {% for quiz in module.quizzes.all %}
+                <a
+                        {% if module.isActive %}
+                        href="{% url 'quiz-detail' course.id module.id quiz.id %}"
+                        {% endif %}
+                        class="collection-item"><i class="material-icons">fact_check</i> {{ quiz.title }}
+                 <div class="secondary-content">
+                     {% if module.isActive %}
+                    Completed:
+                     {% else %}
+                     Locked:
+                     {% endif %}
+                     <i class="material-icons secondary-content">{% if quiz.id in quiz_completions %}check_circle{% else %}panorama_fish_eye{% endif %}</i>
+                 </div>
+                </a>
+              {% endfor %}
+              {% for assignment in module.assignments.all %}
+                <a
+                        {% if module.isActive %}
+                        href="{% url 'assignment-detail' course.id module.id assignment.id %}"
+                        {% endif %}
+                   class="collection-item"><i class="material-icons">fact_check</i> {{ assignment.title }}
+                 <div class="secondary-content">
+                     {% if module.isActive %}
+                    Completed:
+                     {% else %}
+                     Locked:
+                     {% endif %}
+                  <i class="material-icons secondary-content">
+                  {% if assignment.id in assignment_completions %}check_circle{% else %}panorama_fish_eye{% endif %}
+                  </i>
+                 </div>
+                </a>
+              {% endfor %}
+            </div>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  {% if courseCompleted %}
+    <h5>Course has been completed. Here is your certificate</h5>
+      <div class="certificate_of_completion">
+          <p>Name: <span>{{ user.username }}</span></p>
+          <p>Email: <span>{{ user.email }}</span></p>
+          <p>Course: <span>{{ course }}</span></p>
+      </div>
+  {% endif %}
+  </div>
+  
+</div>
+
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,168 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>Home | </title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="{% static 'css/materialize.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <!-- <link href="{% static 'css/style.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/> -->
+  {% block css %}
+  {% endblock css %}
+  
+</head>
+<body>
+
+  <nav class="navbar" role="navigation">
+          <a href="{% url 'index' %}" class="logo"><img src="{% static 'img/ss-logo.png' %}" class="logo"></a>
+
+      <ul class="right">
+        
+    <li class="  nav-item">
+      <a class="nav-link" href="#"> <!--<i class="material-icons left">home</i> --> Home </a> 
+    </li>
+    <li class="  nav-item">
+      <a class="nav-link" href="#"> About US</a> 
+    </li>
+    <li class="  nav-item">
+      <a class="nav-link" href="#"> Contact Us</a> 
+    </li>
+    {% if isStudent or user.is_superuser %}
+    <li class="  nav-item">
+      <a class="nav-link" href="#"> Student Button</a> 
+    </li>
+    {% endif %}
+    {% if isInterviewer or user.is_superuser %}
+    <li class="  nav-item">
+      <a class="nav-link" href="#"> Interviewer Button</a> 
+    </li>
+    {% endif %}
+    {% if isInstructor or user.is_superuser %}
+    <li class="  nav-item">
+      <a class="nav-link" href="#"> Instructor Button</a> 
+    </li>
+    {% endif %}
+        <li><a href="#" data-target="slide-out" class="sidenav-trigger show-on-large"><i class="material-icons left">person</i>{{ user }}</a></li>
+  </ul>
+  </nav>
+
+ 
+
+  <ul id="slide-out" class="sidenav">
+   
+    <li><div class="user-view">
+      <div class="background">
+        {% if nav_profile.banner %}
+          <img src="{{ nav_profile.banner.url }}">
+        {% else %}
+          <img src="{% static 'img/nobanner.jpg' %}">
+        {% endif %}
+      </div>
+      <a href="#user">
+      {% if nav_profile.picture %}
+        <img src="{{ nav_profile.picture.url }}" class="circle responsive-img">
+      {% else %}
+        <img src="{% static 'img/no_avatar.jpg' %}" class="circle responsive-img">
+      {% endif %} 
+      </a>
+      <a href="#name"><span class="white-text name">{{ nav_profile.user.first_name }} {{ nav_profile.user.last_name }}</span></a>
+      <a href="#email"><span class="white-text email">{{ nav_profile.user.email }}</span></a>
+    </div>
+    </li>
+    
+  
+    <li><a href="{% url 'profile' nav_profile.user.username %}"><i class="material-icons">person</i>My profile</a></li>
+    <li><a href="{% url 'index' %}"><i class="material-icons">dashboard</i>Dashboard</a></li>
+    <li><div class="divider"></div></li>
+    <li><a class="subheader">Learning</a></li>
+    <li><a href="{% url 'categories' %}"><i class="material-icons">menu_book</i>Courses</a></li>
+    <li><a href="{% url 'newcourse' %}"><i class="material-icons">menu_book</i>Create Course</a></li>
+    <li><a href="{% url 'interview' %}"><i class="material-icons">menu_book</i>Interview</a></li>
+    <li><a href="{% url 'inbox' %}"><i class="material-icons">inbox</i>Inbox{% if directs_count %}<span class="new badge red">{{ directs_count }}</span>{% endif %}</a></li>
+    <li><a href=""><i class="material-icons">circle_notifications</i>Notifications</a></li>
+    <li><div class="divider"></div></li>
+    <li><a class="subheader">Teaching</a></li>
+    <li><a href="{% url 'my-courses' %}"><i class="material-icons">menu_book</i>Your courses</a></li>
+    <li><div class="divider"></div></li>
+    <li><a href="{% url 'logout' %}"><i class="material-icons">power_off</i>Log out</a></li>
+  </ul>
+
+
+    {% block banner %}
+    {% endblock %}
+
+
+
+<div class="container">
+  <div class="banner">
+
+    {% block content %}
+    {% endblock %}
+  </div>
+  </div>
+  <br>
+  <br>
+
+<!--------Banner Section------------------>
+
+
+
+<!-- Footer Section -->
+<section id="footer">
+  <footer class="page-footer ">
+    
+      <img src="{% static 'img/white.png' %}" class="footer-img" >
+      <div class="container ">
+          <div class="row">
+              <div class="footer-box">
+                  <!-- <img src="images/footercover.png" class="img-fluid" width="851"> -->
+                  <p> TO Have your Skills Build Like  Your DREAMS Job<strong>skillsquad</strong>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quia, minima sed dolore obcaecati nam recusandae aperiam cum reiciendis deleniti inventore, quod odit, mollitia neque sequi. Culpa eos obcaecati nostrum iure!</p>
+  
+              </div>
+              <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6 footer-box">
+                  <p><b>CONTACT US</b></p>
+                  <P><a href="https://www.google.com/maps/place/7+Gala+Goga+Pehlwan+Wala+Rd,+Abadi+Meher+Wazir+Mehr+Wazir,+Gujranwala,+Punjab,+Pakistan/@32.1512431,74.1702159,18z/data=!4m13!1m7!3m6!1s0x391f2bcd51c59059:0x665c31d3b5bcb777!2s7+Gala+Goga+Pehlwan+Wala+Rd,+Abadi+Meher+Wazir+Mehr+Wazir,+Gujranwala,+Punjab,+Pakistan!3b1!8m2!3d32.1508973!4d74.1707454!3m4!1s0x391f2bcd51c59059:0x665c31d3b5bcb777!8m2!3d32.1508973!4d74.1707454"><i class="fas fa-map-marker-alt"></i>      UCP,Pakistan</a></P>
+                  <P><a href="https://api.whatsapp.com/send?phone=923047712479&fbclid=IwAR1KthJmYwTB3xptDhtpIZhxKpcEmrHN8Vt0t_S-F9FjgZhGzOzcswz1r-8"><i class="fas fa-phone"></i>      03026404836</a></P>
+                  <P><a href="#" class="email"><i class="fas fa-envelope"></i>info@skillsquad.com</a></P>
+              </div>
+              <div class="col-lg-6 col-md-6 col-xs-6 col-sm-6 footer-box">
+                  <p><b>SUBSCRIBE !</b></p>
+                  <input type="email" class="form-control" placeholder="Your Email">
+                  <button type="button" class="btn btn-primary">Subscribe</button>
+  
+              </div>
+          </div>
+          
+          <div class="footer-box col-lg-12 center  py-2">
+            <hr>
+              <P>&copy; Copyrights 2021<a href="#/Home">  Skill Squads</a></P>
+          </div>
+      </div>
+  </footer>
+</section>
+
+  <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="{% static 'js/materialize.js' %}"></script>
+  <script src="{% static 'js/corp.js' %}"></script>
+  <script src="{% static 'js/init.js' %}"></script>
+  <script src="{% static 'js/js/index.js' %}"></script>
+  <script src="{% static 'js/js/meeting.js' %}"></script>
+  <script src="{% static 'js/js/tool.js' %}"></script>
+  <script src="{% static ' js/js/vconsole.min.js' %}"></script>
+  <script src="https://js.stripe.com/v3/"></script>
+  <script src="{% static 'js/init.js' %}"></script>
+  <script src="{% static 'js/main.js' %}"></script>
+  <script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+  <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+  
+  {% block javascript %}
+  {% endblock %}
+
+  </body>
+  </html>

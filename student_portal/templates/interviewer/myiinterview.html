@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="row center-align">
+
+<h1 class=" alert alert-danger">Interview Pannel</h1>
+    {% for i in inr %}
+    
+        
+        
+        <h5 class=" alert alert-danger">{{i.email}}</h5>
+       
+    
+    {% endfor %} -->
+<a href="{% url 'inter' %}" class="btn waves-effect waves-light">Start Meeting</a>
+<a href="{% url 'inter' %}" class="btn waves-effect waves-light">Sceduale Interview </a>
+
+</div>
+{% endblock %}
